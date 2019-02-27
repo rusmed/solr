@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource type="JdbcDataSource"
+                  driver="com.mysql.jdbc.Driver"
+                  url="jdbc:mysql://127.0.0.1/b2b"
+                  user="root"
+                  password=""
+                  batchSize="-1" />
+ 
+    <document name="doc">
+        <entity name="category" datasource="mysql" query="SELECT id,name,parent_id,link,is_finished,type,old_link FROM categories">
+            <field column="id" name="id" />
+            <field column="name" name="name" />
+            <field column="parent_id" name="parentId" />
+            <field column="old_link" name="oldLink" />
+            <field column="is_finished" name="isFinished" />
+            <field column="type" name="type" />
+            <field column="link" name="link" />
+        </entity>
+    </document>
+</dataConfig>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource type="JdbcDataSource"
+                  driver="com.mysql.jdbc.Driver"
+                  url="jdbc:mysql://127.0.0.1/riamart"
+                  user="root"
+                  password="admin"
+                  batchSize="-1" />
+ 
+    <document name="doc">
+        <entity name="item" datasource="mysql" query="SELECT ID,Name,SEID,IsParent,CategoryIDs,ImgUrlThumbSuggest,Brand,PriceSort,PriceSale,PriceOffer,Description,Actor,Artist,AudioFormat,Author,Binding,Color,Department,EAN,Format,Genre,ISBN,Manufacturer,MediaType,Model,MPN,Platform,Publisher,ProductGroup,ProductTypeName,Size,Studio,Deleted FROM products">
+            <field column="ID" name="id" />
+			
+			<!--<field column="Name" name="name_suggest"/>-->
+			
+            <field column="Name" name="name" />
+            <field column="SEID" name="seid" />
+            <field column="CategoryIDs" name="categoryids" />
+            <field column="ImgUrlThumbSuggest" name="imageurl" />
+            <field column="PriceSort" name="price" />
+            <field column="PriceSale" name="pricesale" />
+            <field column="PriceOffer" name="priceoffer" />
+            <field column="Description" name="desc" />
+            <field column="Actor" name="actor" />
+            <field column="Artist" name="artist" />
+            <field column="AudioFormat" name="audioformat" />
+            <field column="Author" name="author" />
+            <field column="Brand" name="brand" />
+            <field column="Binding" name="binding" />
+            <field column="Color" name="color" />
+            <field column="Department" name="department" />
+            <field column="EAN" name="ean" />
+            <field column="Format" name="format" />
+            <field column="Genre" name="genre" />
+            <field column="ISBN" name="isbn" />
+            <field column="Manufacturer" name="manufacturer" />
+            <field column="MediaType" name="mediatype" />
+            <field column="Model" name="model" />
+            <field column="MPN" name="mpn" />
+            <field column="Platform" name="platform" />
+            <field column="Publisher" name="publisher" />
+            <field column="ProductGroup" name="productgroup" />
+            <field column="ProductTypeName" name="producttypename" />
+            <field column="Size" name="size" />
+            <field column="Studio" name="studio" />
+            <field column="Deleted" name="deleted" />
+            <field column="IsParent" name="is_parent" />
+        </entity>
+    </document>
+</dataConfig>

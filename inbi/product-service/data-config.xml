@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource type="JdbcDataSource"
+                  driver="com.mysql.jdbc.Driver"
+                  url="jdbc:mysql://127.0.0.1/b2b"
+                  user="root"
+                  password=""
+                  batchSize="-1" />
+ 
+    <document name="doc">
+        <entity name="product" datasource="mysql" query="SELECT p.id,p.name,p.seid,p.link,p.description,p.owner_id,p.company_id,p.category_id,p.rate_sum,p.status,p.temp_desc,p.is_expired,p.is_premium,'product' AS type,c.breadcrumb FROM products AS p LEFT JOIN categories c ON c.id = p.category_id" transformer="HTMLStripTransformer">
+            <field column="id" name="id" />
+            <field column="name" name="name" />
+            <field column="seid" name="seid" />
+            <field column="link" name="link" />
+            <field column="description" name="desc" />
+            <field column="owner_id" name="ownerid" />
+            <field column="company_id" name="companyid" />
+            <field column="category_id" name="categoryid" />
+            <field column="rate_sum" name="ratesum" />
+            <field column="type" name="type" />
+            <field column="status" name="status" />
+            <field column="temp_desc" name="tempdesc" stripHTML="true" />
+            <field column="breadcrumb" name="breadcrumbs" />
+            <field column="is_expired" name="isexpired" />
+            <field column="is_premium" name="ispremium" />
+			
+			<entity name="product_groupcategory" datasource="mysql" query="SELECT c.id,c.name,c.link FROM categories AS c LEFT JOIN categories_products cp ON c.id = cp.category_id WHERE c.parent_id = 0 AND cp.product_id = '${product.id}'">
+                <field column="id" name="groupcategoryid" />
+                <field column="name" name="categoryname" />
+                <field column="link" name="categorylink" />
+            </entity>
+
+			<entity name="product_category" datasource="mysql" query="SELECT category_id FROM categories_products WHERE product_id = '${product.id}'">
+                <field column="category_id" name="categoryids" />
+            </entity>
+
+            <entity name="product_company" datasource="mysql" query="SELECT name,subdomain FROM companies WHERE id = '${product.company_id}'">
+                <field column="name" name="cname" />
+                <field column="subdomain" name="csubdomain" />
+
+                <entity name="product_company_address" datasource="mysql" query="SELECT CONCAT(`ca`.`lat`, ',', `ca`.`lng`) AS latlon,ca.city_id,ca.address,c.seid FROM company_addresses AS ca LEFT JOIN cities c ON c.id = ca.city_id WHERE company_id = '${product.company_id}'">
+                    <field column="latlon" name="latlon" />
+                    <field column="seid" name="location" />
+                    <field column="city_id" name="cityid" />
+                    <field column="address" name="address" />
+                </entity>
+            </entity>
+
+            <entity name="product_images" datasource="mysql" query="SELECT links FROM images WHERE assign_id = '${product.id}' AND assign = 'product' LIMIT 1">
+                <field column="links" name="images" />
+            </entity>
+
+            <entity name="product_prices" datasource="mysql" query="SELECT CONCAT(`pp`.`price`,';',`c`.`short_name`,';',`pp`.`sale_type`,';',`pp`.`min_order`,';',`m`.`item_type`,';',`m`.`value`,';',`m`.`is_default`) AS priceinfo,`pp`.sale_type FROM products_prices `pp` LEFT JOIN `currencies` AS `c` ON c.id = pp.`currency_id` LEFT JOIN `measures` AS `m` ON m.id = pp.`measure_id` WHERE product_id = '${product.id}'">
+                <field column="priceinfo" name="priceinfo" />
+                <field column="sale_type" name="saletype" />
+            </entity>
+        </entity>
+        <entity name="service" datasource="mysql" query="SELECT s.id,s.name,s.seid,s.link,s.description,s.owner_id,s.company_id,s.category_id,s.rate_sum,s.status,s.temp_desc,s.is_expired,s.is_premium,'service' AS type,CONCAT(`price`,';',`price_min`,';',`price_max`,';',`is_fixed_price`,';',`c`.`short_name`,';',`m`.`item_type`,';',`m`.`value`,';',`m`.`is_default`) AS priceinfo,ct.breadcrumb FROM services `s` LEFT JOIN `currencies` AS `c` ON c.id = s.currency_id LEFT JOIN `categories` ct ON ct.id = s.category_id LEFT JOIN `measures` m ON m.id = s.measure_id" transformer="HTMLStripTransformer">
+            <field column="id" name="id" />
+            <field column="name" name="name" />
+            <field column="seid" name="seid" />
+            <field column="link" name="link" />
+            <field column="description" name="desc" />
+            <field column="owner_id" name="ownerid" />
+            <field column="company_id" name="companyid" />
+            <field column="category_id" name="categoryid" />
+            <field column="rate_sum" name="ratesum" />
+            <field column="type" name="type" />
+            <field column="status" name="status" />
+            <field column="priceinfo" name="priceinfo" />
+            <field column="temp_desc" name="tempdesc" stripHTML="true" />
+            <field column="breadcrumb" name="breadcrumbs" />
+            <field column="is_expired" name="isexpired" />
+            <field column="is_premium" name="ispremium" />
+			
+			<entity name="service_groupcategory" datasource="mysql" query="SELECT c.id,c.name,c.link FROM categories AS c LEFT JOIN categories_services cs ON c.id = cs.category_id WHERE c.parent_id = 0 AND cs.service_id = '${service.id}'">
+                <field column="id" name="groupcategoryid" />
+                <field column="name" name="categoryname" />
+                <field column="link" name="categorylink" />
+            </entity>
+
+			<entity name="service_category" datasource="mysql" query="SELECT category_id FROM categories_services WHERE service_id = '${service.id}'">
+                <field column="category_id" name="categoryids" />
+            </entity>
+
+            <entity name="service_company" datasource="mysql" query="SELECT name,subdomain FROM companies WHERE id = '${service.company_id}'">
+                <field column="name" name="cname" />
+                <field column="subdomain" name="csubdomain" />
+
+                <entity name="service_company_address" datasource="mysql" query="SELECT CONCAT(`ca`.`lat`, ',', `ca`.`lng`) AS latlon,ca.city_id,ca.address,c.seid FROM company_addresses AS ca LEFT JOIN cities c ON c.id = ca.city_id WHERE company_id = '${service.company_id}'">
+                    <field column="latlon" name="latlon" />
+                    <field column="seid" name="location" />
+                    <field column="city_id" name="cityid" />
+                    <field column="address" name="address" />
+                </entity>
+            </entity>
+
+            <entity name="service_images" datasource="mysql" query="SELECT links FROM images WHERE assign_id = '${service.id}' AND assign = 'service' LIMIT 1">
+                <field column="links" name="images" />
+            </entity>
+        </entity>
+    </document>
+</dataConfig>
