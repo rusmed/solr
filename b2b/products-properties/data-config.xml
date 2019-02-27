@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource name="a1"
+				type="JdbcDataSource"
+				encoding="UTF-8"
+				driver="org.postgresql.Driver"
+				url="jdbc:postgresql://127.0.0.1:5433/b2b"
+				user="rustem"
+				password="0000"
+				batchSize="500" />
+ 
+    <document name="doc">
+        <entity name="product" dataSource="a1" query="SELECT pp.id,pp.product_id,pp.category_property_id,pp.value_en,pp.value_ru,pp.value_cn,pp.isvisible,pp.special FROM product_properties pp LEFT JOIN products p ON p.id = pp.product_id WHERE p.id &lt; 6">
+            <field column="id" name="id" />
+            <field column="product_id" name="productId" />
+            <field column="category_property_id" name="categoryPropertyId" />
+            <field column="value_en" name="valueEn" />
+            <field column="value_ru" name="valueRu" />
+            <field column="value_cn" name="valueCn" />
+            <field column="isvisible" name="isVisible" />
+            <field column="special" name="special" />
+        </entity>
+    </document>
+</dataConfig>

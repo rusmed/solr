@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource name="a1"
+				type="JdbcDataSource"
+				encoding="UTF-8"
+				driver="org.postgresql.Driver"
+				url="jdbc:postgresql://127.0.0.1:5433/b2b"
+				user="rustem"
+				password="0000"
+				batchSize="500" />
+ 
+    <document name="doc">
+        <entity name="product" dataSource="a1" query="SELECT p.id,p.name_en,p.price,pm.name_en AS pm_name_en FROM products p LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id WHERE p.id &lt; 6">
+            <field column="id" name="id" />
+            <field column="name_en" name="nameEn" />
+            <field column="price" name="price" />
+            <field column="pm_name_en" name="pmNameEn" />
+        </entity>
+    </document>
+</dataConfig>
