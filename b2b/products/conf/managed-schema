@@ -116,9 +116,35 @@
     <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
-	<field name="nameEn" type="text_general" indexed="true" stored="true" termVectors="true" />
+	<field name="nameEn" type="text_general" indexed="true" stored="true" />
+	<field name="nameRu" type="text_general" indexed="true" stored="true" />
+	<field name="nameCn" type="text_general" indexed="true" stored="true" />
+	<field name="countryId" type="pint" indexed="true" stored="true" />
+	<!-- <field name="countryNameEn" type="string" indexed="true" stored="true" />
+	<field name="countryNameRu" type="string" indexed="true" stored="true" />
+	<field name="countryNameCn" type="string" indexed="true" stored="true" /> -->
+	<field name="productManufacturerId" type="pint" indexed="true" stored="true" />
+	<field name="productManufacturerNameEn" type="text_general" indexed="true" stored="true" />
+	<field name="productManufacturerNameRu" type="text_general" indexed="true" stored="true" />
+	<field name="productManufacturerNameCn" type="text_general" indexed="true" stored="true" />
 	<field name="price" type="pfloat" indexed="true" stored="true" />
-	<field name="pmNameEn" type="string" indexed="true" stored="true" />
+	<field name="net" type="pfloat" indexed="true" stored="false" />
+	<field name="gross" type="pfloat" indexed="true" stored="false" />
+	<field name="volume" type="pfloat" indexed="true" stored="false" />
+	<field name="paymentOptionId" type="pint" indexed="true" stored="true" />
+	<field name="moderateStatus" type="pint" indexed="true" stored="true" />
+	<field name="hash" type="string" indexed="true" stored="true" />
+	<field name="articleCode" type="string" indexed="true" stored="true" />
+	
+	<field name="showcaseId" type="pint" indexed="true" stored="true" />
+	<field name="categoryId" type="pint" indexed="true" stored="true" />
+	<field name="supplierId" type="pint" indexed="true" stored="true" />
+	<field name="manufacturerId" type="pint" indexed="true" stored="true" />
+	<field name="companyId" type="pint" indexed="true" stored="true" />
+	<field name="showcaseDeleted" type="boolean" indexed="true" stored="true" />
+	
+	<field name="currencyPerUnit" type="pint" indexed="true" stored="true" />
+	<field name="pricePerUnit" type="pint" indexed="true" stored="true" />
 
 	<field name="pid" type="pint" indexed="true" stored="true" />
 

@@ -10,7 +10,7 @@
 				batchSize="500" />
  
     <document name="doc">
-        <entity name="product" dataSource="a1" query="SELECT pp.id,pp.product_id,pp.category_property_id,pp.value_en,pp.value_ru,pp.value_cn,pp.isvisible,pp.special FROM product_properties pp LEFT JOIN products p ON p.id = pp.product_id WHERE p.id &lt; 6">
+        <entity name="product" dataSource="a1" query="SELECT pp.id,pp.product_id,pp.category_property_id,pp.value_en,pp.value_ru,pp.value_cn,pp.isvisible,pp.special FROM product_properties pp LEFT JOIN products p ON p.id = pp.product_id WHERE p.moderate_status = 4">
             <field column="id" name="id" />
             <field column="product_id" name="productId" />
             <field column="category_property_id" name="categoryPropertyId" />
