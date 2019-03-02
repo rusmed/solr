@@ -49,7 +49,10 @@
 				<field column="supplier_rating" name="supplierRating" />
 				<field column="manufacturer_rating" name="manufacturerRating" />
             
-				<entity name="showcase_override_properties" datasource="a1" query="SELECT sp.unit_id AS price_per_unit, sp1.unit_id AS currency_per_unit FROM showcase_override_properties sp LEFT JOIN showcase_override_properties sp1 ON sp.showcase_id = sp1.showcase_id AND sp1.override_property_id = 3 WHERE sp.showcase_id = ${showcase.id} AND sp.override_property_id = 2">
+				<entity name="showcase_override_properties" datasource="a1" query="SELECT sp.unit_id AS price_per_unit, sp1.unit_id AS currency_per_unit 
+																					FROM showcase_override_properties sp 
+																					LEFT JOIN showcase_override_properties sp1 ON sp.showcase_id = sp1.showcase_id AND sp1.override_property_id = 3 
+																					WHERE sp.showcase_id = ${showcase.id} AND sp.override_property_id = 2">
 					<field column="price_per_unit" name="pricePerUnit" />
 					<field column="currency_per_unit" name="currencyPerUnit" />
 				</entity>
