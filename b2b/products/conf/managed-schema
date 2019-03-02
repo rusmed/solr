@@ -142,6 +142,8 @@
 	<field name="manufacturerId" type="pint" indexed="true" stored="true" />
 	<field name="companyId" type="pint" indexed="true" stored="true" />
 	<field name="showcaseDeleted" type="boolean" indexed="true" stored="true" />
+	<field name="supplierRating" type="pint" indexed="true" stored="true" />
+	<field name="manufacturerRating" type="pint" indexed="true" stored="true" />
 	
 	<field name="currencyPerUnit" type="pint" indexed="true" stored="true" />
 	<field name="pricePerUnit" type="pint" indexed="true" stored="true" />

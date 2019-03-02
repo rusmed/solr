@@ -34,15 +34,22 @@
             <field column="article_code" name="articleCode" />
             <field column="hash" name="hash" />
             
-			<entity name="showcase" datasource="a1" query="SELECT s.id,s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted FROM showcase s WHERE s.id = ${product.showcase_id}">
+			<entity name="showcase" datasource="a1" query="SELECT s.id,s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,
+																sup.rating AS supplier_rating, man.rating AS manufacturer_rating
+															FROM showcase s 
+															LEFT JOIN suppliers sup ON sup.id = s.supplier_id 
+															LEFT JOIN manufacturers man ON man.id = s.manufacturer_id 
+															WHERE s.id = ${product.showcase_id}">
 				<field column="id" name="showcaseId" />
 				<field column="category_id" name="categoryId" />
 				<field column="supplier_id" name="supplierId" />
 				<field column="manufacturer_id" name="manufacturerId" />
 				<field column="company_id" name="companyId" />
 				<field column="deleted" name="showcaseDeleted" />
+				<field column="supplier_rating" name="supplierRating" />
+				<field column="manufacturer_rating" name="manufacturerRating" />
             
-				<entity name="showcase_override_properties" datasource="a1" query="SELECT sp.unit_id as price_per_unit, sp1.unit_id as currency_per_unit FROM showcase_override_properties sp LEFT JOIN showcase_override_properties sp1 ON sp.showcase_id = sp1.showcase_id AND sp1.override_property_id = 3 WHERE sp.showcase_id = ${showcase.id} AND sp.override_property_id = 2">
+				<entity name="showcase_override_properties" datasource="a1" query="SELECT sp.unit_id AS price_per_unit, sp1.unit_id AS currency_per_unit FROM showcase_override_properties sp LEFT JOIN showcase_override_properties sp1 ON sp.showcase_id = sp1.showcase_id AND sp1.override_property_id = 3 WHERE sp.showcase_id = ${showcase.id} AND sp.override_property_id = 2">
 					<field column="price_per_unit" name="pricePerUnit" />
 					<field column="currency_per_unit" name="currencyPerUnit" />
 				</entity>
