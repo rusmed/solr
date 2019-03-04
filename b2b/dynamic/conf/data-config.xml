@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+	<script><![CDATA[
+	function ProductProperties(row)
+	{
+		row.put('propEn_' + row.get('category_property_id'), row.get('value_en'));
+		row.put('propRu_' + row.get('category_property_id'), row.get('value_ru'));
+		row.put('propCn_' + row.get('category_property_id'), row.get('value_cn'));
+		row.remove('category_property_id');
+		row.remove('value_en');
+		row.remove('value_ru');
+		row.remove('value_cn');
+		return row;
+	}
+	]]></script>
+
+    <dataSource name="a1"
+				type="JdbcDataSource"
+				encoding="UTF-8"
+				driver="org.postgresql.Driver"
+				url="jdbc:postgresql://127.0.0.1:5433/b2b"
+				user="rustem"
+				password="0000"
+				batchSize="500" />
+ 
+    <document name="doc">
+        <entity name="product" dataSource="a1" query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.country_id,
+															pm.id as pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
+															p.price,p.net,p.gross,p.volume,p.payment_option_id,p.moderate_status,p.article_code,p.hash,p.showcase_id,
+															s.id,s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,
+															sup.rating AS supplier_rating, man.rating AS manufacturer_rating,
+															sp1.unit_id AS price_per_unit, sp2.unit_id AS currency_per_unit 
+														FROM products p  
+														LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
+														LEFT JOIN showcase s ON s.id = p.showcase_id 
+														LEFT JOIN suppliers sup ON sup.id = s.supplier_id 
+														LEFT JOIN manufacturers man ON man.id = s.manufacturer_id 
+														LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
+														LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
+														WHERE p.moderate_status = 4">
+            <field column="id" name="id" />
+            <field column="name_en" name="nameEn" />
+            <field column="name_ru" name="nameRu" />
+            <field column="name_cn" name="nameCn" />
+            <field column="country_id" name="countryId" />
+            <field column="pm_id" name="productManufacturerId" />
+            <field column="pm_name_en" name="productManufacturerNameEn" />
+            <field column="pm_name_ru" name="productManufacturerNameRu" />
+            <field column="pm_name_cn" name="productManufacturerNameCn" />
+            <field column="price" name="price" />
+            <field column="net" name="net" />
+            <field column="gross" name="gross" />
+            <field column="volume" name="volume" />
+            <field column="payment_option_id" name="paymentOptionId" />
+            <field column="moderate_status" name="moderateStatus" />
+            <field column="article_code" name="articleCode" />
+            <field column="hash" name="hash" />
+			<field column="id" name="showcaseId" />
+			<field column="category_id" name="categoryId" />
+			<field column="supplier_id" name="supplierId" />
+			<field column="manufacturer_id" name="manufacturerId" />
+			<field column="company_id" name="companyId" />
+			<field column="deleted" name="showcaseDeleted" />
+			<field column="supplier_rating" name="supplierRating" />
+			<field column="manufacturer_rating" name="manufacturerRating" />
+			<field column="price_per_unit" name="pricePerUnit" />
+			<field column="currency_per_unit" name="currencyPerUnit" />
+			
+			<entity name="pp" datasource="a1" query="SELECT category_property_id,value_en,value_ru,value_cn FROM product_properties WHERE product_id = ${product.id}" transformer="script:ProductProperties">
+			
+			</entity>
+		</entity>
+    </document>
+</dataConfig>
