@@ -1,15 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataConfig>
 	<script><![CDATA[
-	function ProductProperties(row)
+	function Product(row)
 	{
-		row.put('propEn_' + row.get('category_property_id'), row.get('value_en'));
-		row.put('propRu_' + row.get('category_property_id'), row.get('value_ru'));
-		row.put('propCn_' + row.get('category_property_id'), row.get('value_cn'));
-		row.remove('category_property_id');
-		row.remove('value_en');
-		row.remove('value_ru');
-		row.remove('value_cn');
+		processProperties(row);
+		processPhotos(row);
+		
+		return row;
+    }
+	function processProperties(row)
+	{
+		try {
+			var categoryPropertyIds = JSON.parse(row.get('category_property_ids'));
+			var propertyValuesEn = JSON.parse(row.get('property_values_en'));
+			var propertyValuesRu = JSON.parse(row.get('property_values_ru'));
+			var propertyValuesCn = JSON.parse(row.get('property_values_cn'));
+			if (categoryPropertyIds.length) {
+				for (var i in categoryPropertyIds) {
+					row.put('propEn_' + categoryPropertyIds[i], propertyValuesEn[i]);
+					row.put('propRu_' + categoryPropertyIds[i], propertyValuesRu[i]);
+					row.put('propCn_' + categoryPropertyIds[i], propertyValuesCn[i]);
+				}
+			}
+		} catch (e) {
+		
+		}
+		
+		row.remove('category_property_ids');
+		row.remove('property_values_en');
+		row.remove('property_values_ru');
+		row.remove('property_values_cn');
+
+		return row;
+	}
+	function processPhotos(row)
+	{
+		var photo = '';
+		try {
+			var images = JSON.parse(row.get('photos'));
+			if (images.length) {
+				photo = images[0].link;
+			}
+		} catch (e) {
+		
+		}
+		
+        row.remove('photos');
+
+        if (photo) {
+            row.put('photos', photo);
+        }
+
 		return row;
 	}
 	]]></script>
@@ -24,25 +65,37 @@
 				batchSize="500" />
  
     <document name="doc">
-        <entity name="product" dataSource="a1" query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.country_id,
-															pm.id as pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
-															p.price,p.net,p.gross,p.volume,p.payment_option_id,p.moderate_status,p.article_code,p.hash,p.showcase_id,
+        <entity name="product" transformer="script:Product" dataSource="a1" query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,
+															c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,
+															pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
+															p.price,p.net,p.gross,p.volume,p.minimal_amount,p.payment_option_id,p.moderate_status,p.article_code,p.hash,p.showcase_id,
 															s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,
-															sup.rating AS supplier_rating, man.rating AS manufacturer_rating,
-															sp1.unit_id AS price_per_unit, sp2.unit_id AS currency_per_unit 
+															sup.rating AS supplier_rating,man.rating AS manufacturer_rating,
+															COALESCE(sl.locality_id,ml.locality_id) AS activity_city_id,
+															sp1.unit_id AS price_per_unit,sp2.unit_id AS currency_per_unit,
+															json_agg(pp.category_property_id) AS category_property_ids,json_agg(pp.value_en) AS property_values_en,
+															json_agg(pp.value_ru) AS property_values_ru,json_agg(pp.value_cn) AS property_values_cn
 														FROM products p  
+														LEFT JOIN countries c ON c.id = p.country_id 
 														LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
 														LEFT JOIN showcase s ON s.id = p.showcase_id 
 														LEFT JOIN suppliers sup ON sup.id = s.supplier_id 
+														LEFT JOIN locations sl ON sl.id = sup.location_fact_id 
 														LEFT JOIN manufacturers man ON man.id = s.manufacturer_id 
+														LEFT JOIN locations ml ON ml.id = man.location_fact_id 
+														LEFT JOIN product_properties pp ON p.id = pp.product_id 
 														LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
 														LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
-														WHERE p.moderate_status = 4">
+														WHERE p.moderate_status = 4
+														GROUP BY p.id,c.id,pm.id,s.id,sup.id,sl.id,man.id,ml.id,sp1.id,sp2.id">
             <field column="id" name="id" />
             <field column="name_en" name="nameEn" />
             <field column="name_ru" name="nameRu" />
             <field column="name_cn" name="nameCn" />
             <field column="country_id" name="countryId" />
+            <field column="c_name_en" name="countryNameEn" />
+            <field column="c_name_ru" name="countryNameRu" />
+            <field column="c_name_cn" name="countryNameCn" />
             <field column="pm_id" name="productManufacturerId" />
             <field column="pm_name_en" name="productManufacturerNameEn" />
             <field column="pm_name_ru" name="productManufacturerNameRu" />
@@ -51,6 +104,7 @@
             <field column="net" name="net" />
             <field column="gross" name="gross" />
             <field column="volume" name="volume" />
+            <field column="minimal_amount" name="minimalAmount" />
             <field column="payment_option_id" name="paymentOptionId" />
             <field column="moderate_status" name="moderateStatus" />
             <field column="article_code" name="articleCode" />
@@ -59,16 +113,13 @@
             <field column="category_id" name="categoryId" />
             <field column="supplier_id" name="supplierId" />
             <field column="manufacturer_id" name="manufacturerId" />
+            <field column="activity_city_id" name="activityCityId" />
             <field column="company_id" name="companyId" />
             <field column="deleted" name="showcaseDeleted" />
             <field column="supplier_rating" name="supplierRating" />
             <field column="manufacturer_rating" name="manufacturerRating" />
             <field column="price_per_unit" name="pricePerUnit" />
             <field column="currency_per_unit" name="currencyPerUnit" />
-            
-            <entity name="pp" datasource="a1" query="SELECT category_property_id,value_en,value_ru,value_cn FROM product_properties WHERE product_id = ${product.id}" transformer="script:ProductProperties">
-            
-            </entity>
         </entity>
     </document>
 </dataConfig>
