@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+	<script><![CDATA[
+	function FreeOrder(row)
+	{
+		processCategories(row);
+		
+		return row;
+    }
+	function processCategories(row)
+	{
+		var isMixed = false;
+		var categoryIds = new java.util.ArrayList();
+
+		try {
+			var childs = JSON.parse(row.get('child_free_orders'));
+			if (childs.length) {
+				isMixed = true;
+				for (var i in childs) {
+					categoryIds.add(childs[i].categoryId);
+				}
+			}
+		} catch (e) {
+		
+		}
+		
+		row.put('categoryId', categoryIds);
+		row.put('isMixed', isMixed);
+
+		return row;
+	}
+	]]></script>
+
+    <dataSource name="a1"
+				type="JdbcDataSource"
+				encoding="UTF-8"
+				driver="org.postgresql.Driver"
+				url="jdbc:postgresql://127.0.0.1:5433/b2b"
+				user="rustem"
+				password="0000"
+				batchSize="500" />
+ 
+    <document name="doc">
+        <entity name="freeOrder" transformer="script:FreeOrder" dataSource="a1" query="SELECT fo.id,fo.status_id,fo.scope_id,fo.category_id,fo.supplier_or_manufacturer,fo.payment_option_id,
+															fo.taken_activity_name_id,fo.taken_company_id,fo.taken_activity_id,fo.child_free_orders,fo.parent_id,
+															fo.total_brut,fo.total_net,fo.total_volume,fo.total_count,fo.total_price,
+															fo.net_me_id,fo.brut_me_id,fo.volume_me_id,fo.count_me_id,fo.unit_id,
+															c.id AS company_id,c.status AS company_status,c.is_cash_payments AS is_cash_payments,c.is_cashless_payments_vat_included AS is_cashless_payments_vat_included,
+															c.is_cashless_payments_without_vat AS is_cashless_payments_without_vat,c.is_cashless_payments_on_card AS is_cashless_payments_on_card
+														FROM free_orders fo  
+														LEFT JOIN companies c ON c.id = fo.company_id 
+														WHERE fo.proposal_free_order_id IS NULL AND fo.parent_id IS NULL AND c.status = 1">
+            <field column="id" name="id" />
+            <field column="status_id" name="status" />
+            <field column="scope_id" name="scope" />
+            <field column="category_id" name="categoryId" />
+            <field column="supplier_or_manufacturer" name="supplierOrManufacturer" />
+            <field column="payment_option_id" name="paymentOptionId" />
+            <field column="taken_activity_name_id" name="takenActivityNameId" />
+            <field column="taken_activity_id" name="takenActivityId" />
+            <field column="taken_company_id" name="takenCompanyId" />
+            <field column="total_brut" name="totalBrut" />
+            <field column="total_net" name="totalNet" />
+            <field column="total_volume" name="totalVolume" />
+            <field column="total_count" name="totalCount" />
+            <field column="total_price" name="totalPrice" />
+            <field column="net_me_id" name="netMe" />
+            <field column="brut_me_id" name="brutMe" />
+            <field column="volume_me_id" name="volumeMe" />
+            <field column="count_me_id" name="countMe" />
+            <field column="unit_id" name="currencyMe" />
+            <field column="company_id" name="companyId" />
+            <field column="is_cash_payments" name="cashPayments" />
+            <field column="is_cashless_payments_vat_included" name="cashlessPaymentsVATIncluded" />
+            <field column="is_cashless_payments_without_vat" name="cashlessPaymentsWithoutVAT" />
+            <field column="is_cashless_payments_on_card" name="cashlessPaymentsOnCard" />
+        </entity>
+    </document>
+</dataConfig>

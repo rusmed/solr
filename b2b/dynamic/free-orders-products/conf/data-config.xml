@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+	<script><![CDATA[
+	function FreeOrderProduct(row)
+	{
+		processFreeOrderId(row);
+		
+		return row;
+    }
+	function processFreeOrderId(row)
+	{
+		var freeOrderId = row.get('fo_parent_id');
+
+		if (freeOrderId != null) {
+			row.remove('free_order_id');
+			row.put('freeOrderId', freeOrderId);
+		}
+
+		return row;
+	}
+	]]></script>
+
+    <dataSource name="a1"
+				type="JdbcDataSource"
+				encoding="UTF-8"
+				driver="org.postgresql.Driver"
+				url="jdbc:postgresql://127.0.0.1:5433/b2b"
+				user="rustem"
+				password="0000"
+				batchSize="500" />
+ 
+    <document name="doc">
+        <entity name="freeOrderProduct" transformer="script:FreeOrderProduct" dataSource="a1" query="SELECT fp.id,fo.id AS free_order_id,fo.parent_id AS fo_parent_id,fo.category_id,fo.company_id,
+															COALESCE(vp.name_en,p.name_en) AS product_name_en,COALESCE(vp.name_ru,p.name_ru) AS product_name_ru,COALESCE(vp.name_cn,p.name_cn) AS product_name_cn,
+															COALESCE(vpc.id,pc.id) AS product_country_id,COALESCE(vpc.name_en,pc.name_en) AS country_name_en,COALESCE(vpc.name_ru,pc.name_ru) AS country_name_ru,COALESCE(vpc.name_cn,pc.name_cn) AS country_name_cn,
+															pm.id AS pm_id,COALESCE(vp.product_manufacturer,pm.name_en) AS pm_name_en,COALESCE(vp.product_manufacturer,pm.name_ru) AS pm_name_ru,COALESCE(vp.product_manufacturer,pm.name_cn) AS pm_name_cn,
+															COALESCE(vp.payment_option_id,p.payment_option_id) AS product_po_id
+														FROM free_products fp  
+														LEFT JOIN free_orders fo ON fo.id = fp.free_orders_id 
+														LEFT JOIN virtual_products vp ON vp.id = fp.virtual_product_id 
+														LEFT JOIN countries vpc ON vpc.id = vp.country_id 
+														LEFT JOIN products p ON p.id = fp.product_id 
+														LEFT JOIN countries pc ON pc.id = p.country_id 
+														LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
+														WHERE fo.proposal_free_order_id IS NULL">
+            <field column="id" name="id" />
+            <field column="free_order_id" name="freeOrderId" />
+            <field column="category_id" name="categoryId" />
+            <field column="product_name_en" name="nameEn" />
+            <field column="product_name_ru" name="nameRu" />
+            <field column="product_name_cn" name="nameCn" />
+            <field column="product_country_id" name="countryId" />
+            <field column="country_name_en" name="countryNameEn" />
+            <field column="country_name_ru" name="countryNameRu" />
+            <field column="country_name_cn" name="countryNameCn" />
+            <field column="pm_id" name="productManufacturerId" />
+            <field column="pm_name_en" name="productManufacturerNameEn" />
+            <field column="pm_name_ru" name="productManufacturerNameRu" />
+            <field column="pm_name_cn" name="productManufacturerNameCn" />
+            <field column="product_po_id" name="paymentOptionId" />
+            <field column="company_id" name="companyId" />
+        </entity>
+    </document>
+</dataConfig>

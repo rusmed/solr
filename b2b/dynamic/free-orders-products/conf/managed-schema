@@ -116,6 +116,22 @@
     <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
+	<field name="freeOrderId" type="pint" indexed="true" stored="true" />
+	<field name="categoryId" type="pint" indexed="true" stored="true" />
+	<field name="nameEn" type="edgytext" indexed="true" stored="true" termVectors="true" />
+	<field name="nameRu" type="edgytext" indexed="true" stored="true" termVectors="true" />
+	<field name="nameCn" type="edgytext" indexed="true" stored="true" termVectors="true" />
+	<field name="countryId" type="pint" indexed="true" stored="true" />
+	<field name="countryNameEn" type="string" indexed="true" stored="true" />
+	<field name="countryNameRu" type="string" indexed="true" stored="true" />
+	<field name="countryNameCn" type="string" indexed="true" stored="true" />
+	<field name="productManufacturerId" type="pint" indexed="true" stored="true" />
+	<field name="productManufacturerNameEn" type="string" indexed="true" stored="true" />
+	<field name="productManufacturerNameRu" type="string" indexed="true" stored="true" />
+	<field name="productManufacturerNameCn" type="string" indexed="true" stored="true" />
+	<field name="paymentOptionId" type="pint" indexed="true" stored="true" />
+	<field name="companyId" type="pint" indexed="true" stored="true" />
+
     <!-- This can be enabled, in case the client does not know what fields may be searched. It isn't enabled by default
          because it's very expensive to index everything twice. -->
     <!-- <copyField source="*" dest="_text_"/> -->
@@ -125,7 +141,7 @@
        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
        RESTRICTION: the glob-like pattern in the name attribute must have a "*" only at the start or the end.  -->
    
-    <dynamicField name="*_i"  type="pint"    indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_i"  type="pint"    indexed="true"  stored="true"/>
     <dynamicField name="*_is" type="pints"    indexed="true"  stored="true"/>
     <dynamicField name="*_s"  type="string"  indexed="true"  stored="true" />
     <dynamicField name="*_ss" type="strings"  indexed="true"  stored="true"/>
@@ -139,22 +155,22 @@
     <dynamicField name="*_fs" type="pfloats"  indexed="true"  stored="true"/>
     <dynamicField name="*_d"  type="pdouble" indexed="true"  stored="true"/>
     <dynamicField name="*_ds" type="pdoubles" indexed="true"  stored="true"/>
-    <dynamicField name="random_*" type="random"/>
+    <dynamicField name="random_*" type="random"/> -->
 
     <!-- Type used for data-driven schema, to add a string copy for each text field -->
-    <dynamicField name="*_str" type="strings" stored="false" docValues="true" indexed="false" useDocValuesAsStored="false"/>
+    <!-- <dynamicField name="*_str" type="strings" stored="false" docValues="true" indexed="false" useDocValuesAsStored="false"/>
 
     <dynamicField name="*_dt"  type="pdate"    indexed="true"  stored="true"/>
     <dynamicField name="*_dts" type="pdate"    indexed="true"  stored="true" multiValued="true"/>
     <dynamicField name="*_p"  type="location" indexed="true" stored="true"/>
-    <dynamicField name="*_srpt"  type="location_rpt" indexed="true" stored="true"/>
+    <dynamicField name="*_srpt"  type="location_rpt" indexed="true" stored="true"/> -->
     
     <!-- payloaded dynamic fields -->
-    <dynamicField name="*_dpf" type="delimited_payloads_float" indexed="true"  stored="true"/>
+    <!-- <dynamicField name="*_dpf" type="delimited_payloads_float" indexed="true"  stored="true"/>
     <dynamicField name="*_dpi" type="delimited_payloads_int" indexed="true"  stored="true"/>
     <dynamicField name="*_dps" type="delimited_payloads_string" indexed="true"  stored="true"/>
 
-    <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/> -->
 
     <!-- Field to use to determine and enforce document uniqueness.
       Unless this field is marked with required="false", it will be a required field
@@ -268,6 +284,20 @@
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
       </analyzer>
     </fieldType>
+    
+	<fieldType name="edgytext" class="solr.TextField" positionIncrementGap="100">
+		<analyzer type="index">
+		   <tokenizer class="solr.KeywordTokenizerFactory"/>
+		   <filter class="solr.LowerCaseFilterFactory"/>
+		   <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+		   <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="20"/>
+		</analyzer>
+		<analyzer type="query">
+		   <tokenizer class="solr.KeywordTokenizerFactory"/>
+		   <filter class="solr.LowerCaseFilterFactory"/>
+		   <filter class="solr.WordDelimiterFilterFactory" generateWordParts="0" generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="0"/>
+		</analyzer>
+	</fieldType>
 
     <!-- A general text field that has reasonable, generic
          cross-language defaults: it tokenizes with StandardTokenizer,
