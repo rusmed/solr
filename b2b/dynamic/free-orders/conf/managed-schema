@@ -137,6 +137,7 @@
 	<field name="isMixed" type="boolean" indexed="true" stored="true" />
 	
 	<field name="companyId" type="pint" indexed="true" stored="true" />
+	<field name="individual" type="boolean" indexed="true" stored="true" />
 	<field name="cashPayments" type="boolean" indexed="true" stored="true" />
 	<field name="cashlessPaymentsOnCard" type="boolean" indexed="true" stored="true" />
 	<field name="cashlessPaymentsWithoutVAT" type="boolean" indexed="true" stored="true" />
