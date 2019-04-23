@@ -127,6 +127,10 @@
 	<field name="productManufacturerNameEn" type="string" indexed="true" stored="true" />
 	<field name="productManufacturerNameRu" type="string" indexed="true" stored="true" />
 	<field name="productManufacturerNameCn" type="string" indexed="true" stored="true" />
+	<field name="productModelId" type="pint" indexed="true" stored="true" />
+	<field name="productModelNameEn" type="string" indexed="true" stored="true" />
+	<field name="productModelNameRu" type="string" indexed="true" stored="true" />
+	<field name="productModelNameCn" type="string" indexed="true" stored="true" />
 	<field name="price" type="pfloat" indexed="true" stored="true" docValues="true" />
 	<field name="net" type="pfloat" indexed="true" stored="false" />
 	<field name="gross" type="pfloat" indexed="true" stored="false" />
@@ -140,6 +144,9 @@
 	<field name="available" type="boolean" indexed="true" stored="true" />
 	<field name="gtin" type="string" indexed="true" stored="true" />
 	<field name="mpn" type="string" indexed="true" stored="true" />
+	<field name="delivery" type="boolean" indexed="true" stored="true" />
+	<field name="warranty" type="boolean" indexed="true" stored="true" />
+	<field name="pickup" type="boolean" indexed="true" stored="true" />
 	
 	<field name="showcaseId" type="pint" indexed="true" stored="true" />
 	<field name="categoryId" type="pint" indexed="true" stored="true" />
@@ -149,6 +156,7 @@
 	<field name="manufacturerId" type="pint" indexed="true" stored="true" />
 	<field name="manufacturerRating" type="pint" indexed="true" stored="true" />
 	<field name="manufacturerName" type="string" indexed="false" stored="true" />
+	<field name="workWithCompanies" type="boolean" indexed="true" stored="true" />
 	<field name="activityCityId" type="pint" indexed="true" stored="true" />
 	<field name="cashPayments" type="boolean" indexed="true" stored="true" />
 	<field name="cashlessPaymentsOnCard" type="boolean" indexed="true" stored="true" />
@@ -159,6 +167,8 @@
 
 	<field name="currencyPerUnit" type="pint" indexed="true" stored="true" />
 	<field name="pricePerUnit" type="pint" indexed="true" stored="true" />
+
+	<field name="pid" type="pint" indexed="true" stored="true" />
 	
 	<dynamicField name="propEn_*" type="string" indexed="true" stored="true"/>
 	<dynamicField name="propRu_*" type="string" indexed="true" stored="true"/>
@@ -215,6 +225,8 @@
 
     <copyField source="sourceFieldName" dest="destinationFieldName"/>
     -->
+
+	<copyField source="id" dest="pid"/>
 
     <!-- field type definitions. The "name" attribute is
        just a label to be used by field definitions.  The "class"
@@ -321,13 +333,13 @@
 		<analyzer type="index">
 		   <tokenizer class="solr.KeywordTokenizerFactory"/>
 		   <filter class="solr.LowerCaseFilterFactory"/>
-		   <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+		   <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" splitOnNumerics="0" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
 		   <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="20"/>
 		</analyzer>
 		<analyzer type="query">
 		   <tokenizer class="solr.KeywordTokenizerFactory"/>
 		   <filter class="solr.LowerCaseFilterFactory"/>
-		   <filter class="solr.WordDelimiterFilterFactory" generateWordParts="0" generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="0"/>
+		   <filter class="solr.WordDelimiterFilterFactory" generateWordParts="0" splitOnNumerics="0" generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="0"/>
 		</analyzer>
 	</fieldType>
 
