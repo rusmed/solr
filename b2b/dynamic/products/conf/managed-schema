@@ -147,6 +147,7 @@
 	<field name="delivery" type="boolean" indexed="true" stored="true" />
 	<field name="warranty" type="boolean" indexed="true" stored="true" />
 	<field name="pickup" type="boolean" indexed="true" stored="true" />
+	<field name="feedId" type="pint" indexed="true" stored="true" />
 	
 	<field name="showcaseId" type="pint" indexed="true" stored="true" />
 	<field name="categoryId" type="pint" indexed="true" stored="true" />
@@ -158,6 +159,7 @@
 	<field name="manufacturerName" type="string" indexed="false" stored="true" />
 	<field name="workWithCompanies" type="boolean" indexed="true" stored="true" />
 	<field name="activityCityId" type="pint" indexed="true" stored="true" />
+	<field name="activityRegionId" type="pint" indexed="true" stored="true" />
 	<field name="cashPayments" type="boolean" indexed="true" stored="true" />
 	<field name="cashlessPaymentsOnCard" type="boolean" indexed="true" stored="true" />
 	<field name="cashlessPaymentsWithoutVAT" type="boolean" indexed="true" stored="true" />
