@@ -6,6 +6,7 @@
 		processProperties(row);
 		processPhotos(row);
 		processPaymentMethods(row);
+		processCategories(row);
 		
 		return row;
     }
@@ -78,6 +79,23 @@
 
 		return row;
 	}
+	function processCategories(row)
+	{
+		var path = row.get('c_path');
+		if (path) {
+			var categoryIds = new java.util.ArrayList();
+			var categories = path.toString().split(".");
+			categories.forEach(function(categoryId) {
+				categoryIds.add(categoryId);
+			});
+		
+			row.put('categoryId', categoryIds);
+		}
+		
+        row.remove('c_path');
+
+		return row;
+	}
 	]]></script>
 
     <dataSource name="a1"
@@ -92,11 +110,11 @@
     <document name="doc">
         <entity name="product" pk="id" transformer="script:Product" dataSource="a1" 
 					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,
-						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,
+						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
 						pmod.id AS pmod_id,pmod.name_en AS pmod_name_en,pmod.name_ru AS pmod_name_ru,pmod.name_cn AS pmod_name_cn,
 						p.price,p.net,p.gross,p.volume,p.minimal_amount,p.payment_option_id,p.moderate_status,p.article_code,p.hash,p.showcase_id,
-						s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,
+						s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,s.market_type_wholesale,s.market_type_individual,s.market_type_china,
 						sup.rating AS supplier_rating,sup.name AS supplier_name,
 						man.rating AS manufacturer_rating,man.name AS manufacturer_name,
 						COALESCE(sl.locality_id,ml.locality_id) AS activity_city_id,
@@ -111,6 +129,7 @@
 					LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
 					LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
 					LEFT JOIN showcase s ON s.id = p.showcase_id 
+					LEFT JOIN categories cat ON cat.id = s.category_id 
 					LEFT JOIN suppliers sup ON sup.id = s.supplier_id 
 					LEFT JOIN locations sl ON sl.id = sup.location_fact_id 
 					LEFT JOIN localities slt ON slt.id = sl.locality_id 
@@ -121,18 +140,18 @@
 					LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
 					LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
 					WHERE p.moderate_status = 4
-					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id"
+					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id"
 					
 					deletedPkQuery="SELECT p.id FROM products p WHERE p.moderate_status != 4 AND p.date_updated &gt; '${dih.last_index_time}'"
 					
 					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status = 4 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
 					
 					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,
-						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,
+						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
 						pmod.id AS pmod_id,pmod.name_en AS pmod_name_en,pmod.name_ru AS pmod_name_ru,pmod.name_cn AS pmod_name_cn,
 						p.price,p.net,p.gross,p.volume,p.minimal_amount,p.payment_option_id,p.moderate_status,p.article_code,p.hash,p.showcase_id,
-						s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,
+						s.category_id,s.supplier_id,s.manufacturer_id,s.company_id,s.deleted,s.market_type_wholesale,s.market_type_individual,s.market_type_china,
 						sup.rating AS supplier_rating,sup.name AS supplier_name,
 						man.rating AS manufacturer_rating,man.name AS manufacturer_name,
 						COALESCE(sl.locality_id,ml.locality_id) AS activity_city_id,
@@ -147,6 +166,7 @@
 					LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
 					LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
 					LEFT JOIN showcase s ON s.id = p.showcase_id 
+					LEFT JOIN categories cat ON cat.id = s.category_id 
 					LEFT JOIN suppliers sup ON sup.id = s.supplier_id 
 					LEFT JOIN locations sl ON sl.id = sup.location_fact_id 
 					LEFT JOIN localities slt ON slt.id = sl.locality_id 
@@ -157,7 +177,7 @@
 					LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
 					LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
 					WHERE p.id = ${dih.delta.id}
-					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id">
+					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id">
             <field column="id" name="id" />
             <field column="name_en" name="nameEn" />
             <field column="name_ru" name="nameRu" />
@@ -190,7 +210,6 @@
             <field column="pickup" name="pickup" />
             <field column="hash" name="hash" />
             <field column="showcase_id" name="showcaseId" />
-            <field column="category_id" name="categoryId" />
             <field column="supplier_id" name="supplierId" />
             <field column="supplier_rating" name="supplierRating" />
             <field column="supplier_name" name="supplierName" />
@@ -205,6 +224,9 @@
             <field column="price_per_unit" name="pricePerUnit" />
             <field column="currency_per_unit" name="currencyPerUnit" />
             <field column="feed_id" name="feedId" />
+            <field column="market_type_wholesale" name="marketTypeWholesale" />
+            <field column="market_type_individual" name="marketTypeIndividual" />
+            <field column="market_type_china" name="marketTypeChina" />
         </entity>
     </document>
 </dataConfig>
