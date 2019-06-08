@@ -153,7 +153,8 @@
 	<field name="marketTypeChina" type="boolean" indexed="true" stored="true" />
 	
 	<field name="showcaseId" type="pint" indexed="true" stored="true" />
-	<field name="categoryId" type="pint" indexed="true" stored="true" multiValued="true" />
+	<field name="categoryId" type="pint" indexed="true" stored="true" />
+	<field name="categoryIds" type="pint" indexed="true" stored="true" multiValued="true" />
 	<field name="supplierId" type="pint" indexed="true" stored="true" />
 	<field name="supplierRating" type="pint" indexed="true" stored="true" />
 	<field name="supplierName" type="string" indexed="false" stored="true" />
