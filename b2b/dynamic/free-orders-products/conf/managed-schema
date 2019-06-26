@@ -129,8 +129,16 @@
 	<field name="productManufacturerNameEn" type="string_lower" indexed="true" stored="true" />
 	<field name="productManufacturerNameRu" type="string_lower" indexed="true" stored="true" />
 	<field name="productManufacturerNameCn" type="string_lower" indexed="true" stored="true" />
+	<field name="productModelId" type="pint" indexed="true" stored="true" />
+	<field name="productModelNameEn" type="string_lower" indexed="true" stored="true" />
+	<field name="productModelNameRu" type="string_lower" indexed="true" stored="true" />
+	<field name="productModelNameCn" type="string_lower" indexed="true" stored="true" />
 	<field name="paymentOptionId" type="pint" indexed="true" stored="true" />
 	<field name="companyId" type="pint" indexed="true" stored="true" />
+
+	<dynamicField name="propEn_*" type="string" indexed="true" stored="true"/>
+	<dynamicField name="propRu_*" type="string" indexed="true" stored="true"/>
+	<dynamicField name="propCn_*" type="string" indexed="true" stored="true"/>
 
     <!-- This can be enabled, in case the client does not know what fields may be searched. It isn't enabled by default
          because it's very expensive to index everything twice. -->

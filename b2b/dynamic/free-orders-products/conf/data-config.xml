@@ -4,6 +4,7 @@
 	function FreeOrderProduct(row)
 	{
 		processFreeOrderId(row);
+		processProperties(row);
 		
 		return row;
     }
@@ -15,6 +16,31 @@
 			row.remove('free_order_id');
 			row.put('freeOrderId', freeOrderId);
 		}
+
+		return row;
+	}
+	function processProperties(row)
+	{
+		try {
+			var categoryPropertyIds = JSON.parse(row.get('category_property_ids'));
+			var propertyValuesEn = JSON.parse(row.get('property_values_en'));
+			var propertyValuesRu = JSON.parse(row.get('property_values_ru'));
+			var propertyValuesCn = JSON.parse(row.get('property_values_cn'));
+			if (categoryPropertyIds.length) {
+				for (var i in categoryPropertyIds) {
+					row.put('propEn_' + categoryPropertyIds[i], propertyValuesEn[i]);
+					row.put('propRu_' + categoryPropertyIds[i], propertyValuesRu[i]);
+					row.put('propCn_' + categoryPropertyIds[i], propertyValuesCn[i]);
+				}
+			}
+		} catch (e) {
+		
+		}
+		
+		row.remove('category_property_ids');
+		row.remove('property_values_en');
+		row.remove('property_values_ru');
+		row.remove('property_values_cn');
 
 		return row;
 	}
@@ -34,7 +60,10 @@
 															COALESCE(vp.name_en,p.name_en) AS product_name_en,COALESCE(vp.name_ru,p.name_ru) AS product_name_ru,COALESCE(vp.name_cn,p.name_cn) AS product_name_cn,
 															COALESCE(vpc.id,pc.id) AS product_country_id,COALESCE(vpc.name_en,pc.name_en) AS country_name_en,COALESCE(vpc.name_ru,pc.name_ru) AS country_name_ru,COALESCE(vpc.name_cn,pc.name_cn) AS country_name_cn,
 															pm.id AS pm_id,COALESCE(vp.product_manufacturer,pm.name_en) AS pm_name_en,COALESCE(vp.product_manufacturer,pm.name_ru) AS pm_name_ru,COALESCE(vp.product_manufacturer,pm.name_cn) AS pm_name_cn,
-															COALESCE(vp.payment_option_id,p.payment_option_id) AS product_po_id
+															pmod.id AS pmod_id,pmod.name_en AS pmod_name_en,pmod.name_ru AS pmod_name_ru,pmod.name_cn AS pmod_name_cn,
+															COALESCE(vp.payment_option_id,p.payment_option_id) AS product_po_id,
+															json_agg(pp.category_property_id) AS category_property_ids,json_agg(pp.value_en) AS property_values_en,
+															json_agg(pp.value_ru) AS property_values_ru,json_agg(pp.value_cn) AS property_values_cn
 														FROM free_products fp  
 														LEFT JOIN free_orders fo ON fo.id = fp.free_orders_id 
 														LEFT JOIN virtual_products vp ON vp.id = fp.virtual_product_id 
@@ -42,7 +71,10 @@
 														LEFT JOIN products p ON p.id = fp.product_id 
 														LEFT JOIN countries pc ON pc.id = p.country_id 
 														LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
-														WHERE fo.proposal_free_order_id IS NULL">
+														LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
+														LEFT JOIN product_properties pp ON fp.product_id = pp.product_id 
+														WHERE fo.proposal_free_order_id IS NULL
+														GROUP BY fp.id,fo.id,vp.id,vpc.id,p.id,pc.id,pm.id,pmod.id">
             <field column="id" name="id" />
             <field column="free_order_id" name="freeOrderId" />
             <field column="category_id" name="categoryId" />
@@ -57,6 +89,10 @@
             <field column="pm_name_en" name="productManufacturerNameEn" />
             <field column="pm_name_ru" name="productManufacturerNameRu" />
             <field column="pm_name_cn" name="productManufacturerNameCn" />
+            <field column="pmod_id" name="productModelId" />
+            <field column="pmod_name_en" name="productModelNameEn" />
+            <field column="pmod_name_ru" name="productModelNameRu" />
+            <field column="pmod_name_cn" name="productModelNameCn" />
             <field column="product_po_id" name="paymentOptionId" />
             <field column="company_id" name="companyId" />
         </entity>
