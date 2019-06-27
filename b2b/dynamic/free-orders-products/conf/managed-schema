@@ -118,6 +118,7 @@
 
 	<field name="freeOrderId" type="pint" indexed="true" stored="true" />
 	<field name="categoryId" type="pint" indexed="true" stored="true" />
+	<field name="categoryIds" type="pint" indexed="true" stored="true" multiValued="true" />
 	<field name="nameEn" type="edgytext" indexed="true" stored="true" termVectors="true" />
 	<field name="nameRu" type="edgytext" indexed="true" stored="true" termVectors="true" />
 	<field name="nameCn" type="edgytext" indexed="true" stored="true" termVectors="true" />

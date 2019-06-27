@@ -5,6 +5,7 @@
 	{
 		processFreeOrderId(row);
 		processProperties(row);
+		processCategories(row);
 		
 		return row;
     }
@@ -44,6 +45,23 @@
 
 		return row;
 	}
+	function processCategories(row)
+	{
+		var path = row.get('c_path');
+		if (path) {
+			var categoryIds = new java.util.ArrayList();
+			var categories = path.toString().split(".");
+			categories.forEach(function(categoryId) {
+				categoryIds.add(categoryId);
+			});
+		
+			row.put('categoryIds', categoryIds);
+		}
+		
+        row.remove('c_path');
+
+		return row;
+	}
 	]]></script>
 
     <dataSource name="a1"
@@ -56,7 +74,7 @@
 				batchSize="500" />
  
     <document name="doc">
-        <entity name="freeOrderProduct" transformer="script:FreeOrderProduct" dataSource="a1" query="SELECT fp.id,fo.id AS free_order_id,fo.parent_id AS fo_parent_id,fo.category_id,fo.company_id,
+        <entity name="freeOrderProduct" transformer="script:FreeOrderProduct" dataSource="a1" query="SELECT fp.id,fo.id AS free_order_id,fo.parent_id AS fo_parent_id,fo.category_id,fo.company_id,cat.path AS c_path,
 															COALESCE(vp.name_en,p.name_en) AS product_name_en,COALESCE(vp.name_ru,p.name_ru) AS product_name_ru,COALESCE(vp.name_cn,p.name_cn) AS product_name_cn,
 															COALESCE(vpc.id,pc.id) AS product_country_id,COALESCE(vpc.name_en,pc.name_en) AS country_name_en,COALESCE(vpc.name_ru,pc.name_ru) AS country_name_ru,COALESCE(vpc.name_cn,pc.name_cn) AS country_name_cn,
 															pm.id AS pm_id,COALESCE(vp.product_manufacturer,pm.name_en) AS pm_name_en,COALESCE(vp.product_manufacturer,pm.name_ru) AS pm_name_ru,COALESCE(vp.product_manufacturer,pm.name_cn) AS pm_name_cn,
@@ -66,6 +84,7 @@
 															json_agg(pp.value_ru) AS property_values_ru,json_agg(pp.value_cn) AS property_values_cn
 														FROM free_products fp  
 														LEFT JOIN free_orders fo ON fo.id = fp.free_orders_id 
+														LEFT JOIN categories cat ON cat.id = fo.category_id 
 														LEFT JOIN virtual_products vp ON vp.id = fp.virtual_product_id 
 														LEFT JOIN countries vpc ON vpc.id = vp.country_id 
 														LEFT JOIN products p ON p.id = fp.product_id 
@@ -74,7 +93,7 @@
 														LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
 														LEFT JOIN product_properties pp ON fp.product_id = pp.product_id 
 														WHERE fo.proposal_free_order_id IS NULL
-														GROUP BY fp.id,fo.id,vp.id,vpc.id,p.id,pc.id,pm.id,pmod.id">
+														GROUP BY fp.id,fo.id,cat.id,vp.id,vpc.id,p.id,pc.id,pm.id,pmod.id">
             <field column="id" name="id" />
             <field column="free_order_id" name="freeOrderId" />
             <field column="category_id" name="categoryId" />
