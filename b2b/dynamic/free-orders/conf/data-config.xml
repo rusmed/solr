@@ -49,7 +49,8 @@
 															c.is_cashless_payments_without_vat AS is_cashless_payments_without_vat,c.is_cashless_payments_on_card AS is_cashless_payments_on_card
 														FROM free_orders fo  
 														LEFT JOIN companies c ON c.id = fo.company_id 
-														WHERE fo.proposal_free_order_id IS NULL AND fo.parent_id IS NULL AND c.status = 1">
+														LEFT JOIN categories cat ON cat.id = fo.category_id 
+														WHERE fo.proposal_free_order_id IS NULL AND fo.parent_id IS NULL AND c.status = 1 AND cat.status = 1">
             <field column="id" name="id" />
             <field column="status_id" name="status" />
             <field column="scope_id" name="scope" />

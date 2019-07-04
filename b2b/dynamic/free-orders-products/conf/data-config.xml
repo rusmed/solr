@@ -92,7 +92,7 @@
 														LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
 														LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
 														LEFT JOIN product_properties pp ON fp.product_id = pp.product_id 
-														WHERE fo.proposal_free_order_id IS NULL
+														WHERE fo.proposal_free_order_id IS NULL AND cat.status = 1
 														GROUP BY fp.id,fo.id,cat.id,vp.id,vpc.id,p.id,pc.id,pm.id,pmod.id">
             <field column="id" name="id" />
             <field column="free_order_id" name="freeOrderId" />
