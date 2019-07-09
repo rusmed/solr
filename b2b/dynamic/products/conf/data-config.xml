@@ -109,7 +109,7 @@
  
     <document name="doc">
         <entity name="product" pk="id" transformer="script:Product" dataSource="a1" 
-					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,
+					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
 						pmod.id AS pmod_id,pmod.name_en AS pmod_name_en,pmod.name_ru AS pmod_name_ru,pmod.name_cn AS pmod_name_cn,
@@ -146,7 +146,7 @@
 					
 					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status = 4 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
 					
-					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,
+					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,
 						pmod.id AS pmod_id,pmod.name_en AS pmod_name_en,pmod.name_ru AS pmod_name_ru,pmod.name_cn AS pmod_name_cn,
@@ -179,6 +179,7 @@
 					WHERE p.id = ${dih.delta.id}
 					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id">
             <field column="id" name="id" />
+            <field column="product_card_id" name="productCardId" />
             <field column="name_en" name="nameEn" />
             <field column="name_ru" name="nameRu" />
             <field column="name_cn" name="nameCn" />

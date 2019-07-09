@@ -116,6 +116,7 @@
     <field name="_root_" type="string" indexed="true" stored="false" docValues="false" />
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
+	<field name="productCardId" type="pint" indexed="true" stored="true" />
 	<field name="nameEn" type="edgytext" indexed="true" stored="true" termVectors="true" />
 	<field name="nameRu" type="edgytext" indexed="true" stored="true" termVectors="true" />
 	<field name="nameCn" type="edgytext" indexed="true" stored="true" termVectors="true" />
@@ -176,9 +177,9 @@
 
 	<field name="pid" type="pint" indexed="true" stored="true" />
 	
-	<dynamicField name="propEn_*" type="string_lower" indexed="true" stored="true"/>
-	<dynamicField name="propRu_*" type="string_lower" indexed="true" stored="true"/>
-	<dynamicField name="propCn_*" type="string_lower" indexed="true" stored="true"/>
+	<dynamicField name="propEn_*" type="string" indexed="true" stored="true"/>
+	<dynamicField name="propRu_*" type="string" indexed="true" stored="true"/>
+	<dynamicField name="propCn_*" type="string" indexed="true" stored="true"/>
 
     <!-- This can be enabled, in case the client does not know what fields may be searched. It isn't enabled by default
          because it's very expensive to index everything twice. -->
