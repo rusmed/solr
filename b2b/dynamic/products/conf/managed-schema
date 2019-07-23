@@ -175,6 +175,13 @@
 
 	<field name="currencyPerUnit" type="pint" indexed="true" stored="true" />
 	<field name="pricePerUnit" type="pint" indexed="true" stored="true" />
+	
+	<field name="promoId" type="pint" indexed="false" stored="true" />
+	<field name="promoType" type="pint" indexed="false" stored="true" />
+	<field name="promoActive" type="boolean" indexed="false" stored="true" />
+	<field name="fixedDiscount" type="pfloat" indexed="false" stored="true" docValues="true" />
+	<field name="percentDiscount" type="pint" indexed="false" stored="true" />
+	<field name="priceWithDiscount" type="pfloat" indexed="true" stored="true" docValues="true" />
 
 	<field name="pid" type="pint" indexed="true" stored="true" />
 	
