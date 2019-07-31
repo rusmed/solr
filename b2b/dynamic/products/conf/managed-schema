@@ -153,6 +153,7 @@
 	<field name="marketTypeWholesale" type="boolean" indexed="true" stored="true" />
 	<field name="marketTypeIndividual" type="boolean" indexed="true" stored="true" />
 	<field name="marketTypeChina" type="boolean" indexed="true" stored="true" />
+	<field name="dateUpdated" type="pdate" indexed="true" stored="true" />
 	
 	<field name="showcaseId" type="pint" indexed="true" stored="true" />
 	<field name="categoryId" type="pint" indexed="true" stored="true" />
@@ -176,9 +177,12 @@
 	<field name="currencyPerUnit" type="pint" indexed="true" stored="true" />
 	<field name="pricePerUnit" type="pint" indexed="true" stored="true" />
 	
-	<field name="promoId" type="pint" indexed="false" stored="true" />
-	<field name="promoType" type="pint" indexed="false" stored="true" />
-	<field name="promoActive" type="boolean" indexed="false" stored="true" />
+	<field name="promoWholesaleId" type="pint" indexed="false" stored="true" />
+	<field name="promoWholesaleActive" type="boolean" indexed="false" stored="true" />
+	<field name="promoIndividualId" type="pint" indexed="false" stored="true" />
+	<field name="promoIndividualActive" type="boolean" indexed="false" stored="true" />
+	<field name="promoChinaId" type="pint" indexed="false" stored="true" />
+	<field name="promoChinaActive" type="boolean" indexed="false" stored="true" />
 	<field name="fixedDiscount" type="pfloat" indexed="false" stored="true" docValues="true" />
 	<field name="percentDiscount" type="pint" indexed="false" stored="true" />
 	<field name="priceWithDiscount" type="pfloat" indexed="true" stored="true" docValues="true" />
