@@ -130,8 +130,11 @@
  
     <document name="doc">
         <entity name="product" pk="id" transformer="script:Product" dataSource="a1" 
-					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,
-						p.fixed_discount,p.percent_discount,p.price_with_discount,p.market_type_wholesale,p.market_type_individual,p.market_type_china,
+					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
+						p.fixed_discount_wholesale,p.percent_discount_wholesale,p.price_with_discount_wholesale,
+						p.fixed_discount_individual,p.percent_discount_individual,p.price_with_discount_individual,
+						p.fixed_discount_china,p.percent_discount_china,p.price_with_discount_china,
+						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
 						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,pm.logo AS pm_logo,
@@ -169,8 +172,11 @@
 					
 					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status = 4 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
 					
-					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,
-						p.fixed_discount,p.percent_discount,p.price_with_discount,p.market_type_wholesale,p.market_type_individual,p.market_type_china,
+					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
+						p.fixed_discount_wholesale,p.percent_discount_wholesale,p.price_with_discount_wholesale,
+						p.fixed_discount_individual,p.percent_discount_individual,p.price_with_discount_individual,
+						p.fixed_discount_china,p.percent_discount_china,p.price_with_discount_china,
+						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
 						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,pm.logo AS pm_logo,
@@ -261,9 +267,17 @@
             <field column="promo_individual_active" name="promoIndividualActive" />
             <field column="promo_china_id" name="promoChinaId" />
             <field column="promo_china_active" name="promoChinaActive" />
-            <field column="fixed_discount" name="fixedDiscount" />
-            <field column="percent_discount" name="percentDiscount" />
-            <field column="price_with_discount" name="priceWithDiscount" />
+            <field column="fixed_discount_wholesale" name="fixedDiscountWholesale" />
+            <field column="percent_discount_wholesale" name="percentDiscountWholesale" />
+            <field column="price_with_discount_wholesale" name="priceWithDiscountWholesale" />
+            <field column="fixed_discount_individual" name="fixedDiscountIndividual" />
+            <field column="percent_discount_individual" name="percentDiscountIndividual" />
+            <field column="price_with_discount_individual" name="priceWithDiscountIndividual" />
+            <field column="fixed_discount_china" name="fixedDiscountChina" />
+            <field column="percent_discount_china" name="percentDiscountChina" />
+            <field column="price_with_discount_china" name="priceWithDiscountChina" />
+            <field column="prices" name="prices" />
+            <field column="properties_hash" name="propertiesHash" />
         </entity>
     </document>
 </dataConfig>
