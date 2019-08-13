@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource name="a1"
+				type="JdbcDataSource"
+				encoding="UTF-8"
+				driver="org.postgresql.Driver"
+				url="jdbc:postgresql://127.0.0.1:5433/b2b"
+				user="rustem"
+				password="0000"
+				batchSize="500" />
+ 
+    <document name="doc">
+        <entity name="category" pk="id" dataSource="a1" 
+					query="SELECT c.id,c.parent_id,c.name_en,c.name_ru,c.name_cn,
+					c.enabled,c.status,c.icon_class,c.icon_class_color,c.icon_image
+					FROM categories c">
+            <field column="id" name="id" />
+            <field column="parent_id" name="parentId" />
+            <field column="name_en" name="nameEn" />
+            <field column="name_ru" name="nameRu" />
+            <field column="name_cn" name="nameCn" />
+            <field column="enabled" name="enabled" />
+            <field column="status" name="status" />
+            <field column="icon_class" name="iconClass" />
+            <field column="icon_class_color" name="iconClassColor" />
+            <field column="icon_image" name="iconImage" />
+        </entity>
+    </document>
+</dataConfig>
