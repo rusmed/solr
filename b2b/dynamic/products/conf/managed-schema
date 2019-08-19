@@ -144,6 +144,7 @@
 	<field name="articleCode" type="string" indexed="true" stored="true" />
 	<field name="photos" type="string" indexed="false" stored="true" />
 	<field name="available" type="boolean" indexed="true" stored="true" />
+	<field name="availableInDays" type="pint" indexed="true" stored="true" />
 	<field name="gtin" type="string" indexed="true" stored="true" />
 	<field name="mpn" type="string" indexed="true" stored="true" />
 	<field name="delivery" type="boolean" indexed="true" stored="true" />

@@ -130,7 +130,7 @@
  
     <document name="doc">
         <entity name="product" pk="id" transformer="script:Product" dataSource="a1" 
-					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
+					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.available_in_days,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
 						p.fixed_discount_wholesale,p.percent_discount_wholesale,p.price_with_discount_wholesale,
 						p.fixed_discount_individual,p.percent_discount_individual,p.price_with_discount_individual,
 						p.fixed_discount_china,p.percent_discount_china,p.price_with_discount_china,
@@ -172,7 +172,7 @@
 					
 					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status = 4 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
 					
-					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
+					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.available_in_days,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
 						p.fixed_discount_wholesale,p.percent_discount_wholesale,p.price_with_discount_wholesale,
 						p.fixed_discount_individual,p.percent_discount_individual,p.price_with_discount_individual,
 						p.fixed_discount_china,p.percent_discount_china,p.price_with_discount_china,
@@ -235,6 +235,7 @@
             <field column="moderate_status" name="moderateStatus" />
             <field column="article_code" name="articleCode" />
             <field column="available" name="available" />
+            <field column="available_in_days" name="availableInDays" />
             <field column="gtin" name="gtin" />
             <field column="mpn" name="mpn" />
             <field column="delivery" name="delivery" />
