@@ -38,13 +38,16 @@
 	}
 	function processPhotos(row)
 	{
-		row.put('images', row.get('photos'));
-
 		var photo = '';
+		var images = new java.util.ArrayList();
 		try {
-			var images = JSON.parse(row.get('photos'));
-			if (images.length) {
-				photo = images[0].link;
+			var photos = JSON.parse(row.get('photos'));
+			if (photos.length) {
+				photo = photos[0].link;
+				
+				photos.forEach(function(image) {
+					images.add(image['link']);
+				});
 			}
 		} catch (e) {
 		
@@ -54,6 +57,7 @@
 
         if (photo) {
             row.put('photos', photo);
+			row.put('images', images);
         }
 
 		return row;
