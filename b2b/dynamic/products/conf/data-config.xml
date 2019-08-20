@@ -38,6 +38,8 @@
 	}
 	function processPhotos(row)
 	{
+		row.put('images', row.get('photos'));
+
 		var photo = '';
 		try {
 			var images = JSON.parse(row.get('photos'));
