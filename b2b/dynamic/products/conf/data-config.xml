@@ -285,6 +285,9 @@
             <field column="price_with_discount_china" name="priceWithDiscountChina" />
             <field column="prices" name="prices" />
             <field column="properties_hash" name="propertiesHash" />
+			<entity name="pf" datasource="a1" query="SELECT CONCAT(count_from, '-', count_to, '-', price) AS price_formula FROM product_price_formulas WHERE product_id = ${product.id} ORDER BY id ASC">
+				<field column="price_formula" name="priceFormula" />
+			</entity>
         </entity>
     </document>
 </dataConfig>

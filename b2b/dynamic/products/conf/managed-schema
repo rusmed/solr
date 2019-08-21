@@ -134,6 +134,7 @@
 	<field name="productModelNameRu" type="string_lower" indexed="true" stored="true" />
 	<field name="productModelNameCn" type="string_lower" indexed="true" stored="true" />
 	<field name="price" type="pfloat" indexed="true" stored="true" docValues="true" />
+	<field name="priceFormula" type="string" indexed="false" stored="true" multiValued="true" />
 	<field name="net" type="pfloat" indexed="true" stored="false" />
 	<field name="gross" type="pfloat" indexed="true" stored="false" />
 	<field name="volume" type="pfloat" indexed="true" stored="false" />
