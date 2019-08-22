@@ -137,9 +137,9 @@
     <document name="doc">
         <entity name="product" pk="id" transformer="script:Product" dataSource="a1" 
 					query="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.available_in_days,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
-						p.fixed_discount_wholesale,p.percent_discount_wholesale,p.price_with_discount_wholesale,
-						p.fixed_discount_individual,p.percent_discount_individual,p.price_with_discount_individual,
-						p.fixed_discount_china,p.percent_discount_china,p.price_with_discount_china,
+						p.fixed_markup_wholesale,p.percent_markup_wholesale,p.price_with_discount_wholesale,
+						p.fixed_markup_individual,p.percent_markup_individual,p.price_with_discount_individual,
+						p.fixed_markup_china,p.percent_markup_china,p.price_with_discount_china,
 						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
 						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
@@ -179,9 +179,9 @@
 					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status = 4 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
 					
 					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.available_in_days,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
-						p.fixed_discount_wholesale,p.percent_discount_wholesale,p.price_with_discount_wholesale,
-						p.fixed_discount_individual,p.percent_discount_individual,p.price_with_discount_individual,
-						p.fixed_discount_china,p.percent_discount_china,p.price_with_discount_china,
+						p.fixed_markup_wholesale,p.percent_markup_wholesale,p.price_with_discount_wholesale,
+						p.fixed_markup_individual,p.percent_markup_individual,p.price_with_discount_individual,
+						p.fixed_markup_china,p.percent_markup_china,p.price_with_discount_china,
 						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
 						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
@@ -274,14 +274,14 @@
             <field column="promo_individual_active" name="promoIndividualActive" />
             <field column="promo_china_id" name="promoChinaId" />
             <field column="promo_china_active" name="promoChinaActive" />
-            <field column="fixed_discount_wholesale" name="fixedDiscountWholesale" />
-            <field column="percent_discount_wholesale" name="percentDiscountWholesale" />
+            <field column="fixed_markup_wholesale" name="fixedMarkupWholesale" />
+            <field column="percent_markup_wholesale" name="percentMarkupWholesale" />
             <field column="price_with_discount_wholesale" name="priceWithDiscountWholesale" />
-            <field column="fixed_discount_individual" name="fixedDiscountIndividual" />
-            <field column="percent_discount_individual" name="percentDiscountIndividual" />
+            <field column="fixed_markup_individual" name="fixedMarkupIndividual" />
+            <field column="percent_markup_individual" name="percentMarkupIndividual" />
             <field column="price_with_discount_individual" name="priceWithDiscountIndividual" />
-            <field column="fixed_discount_china" name="fixedDiscountChina" />
-            <field column="percent_discount_china" name="percentDiscountChina" />
+            <field column="fixed_markup_china" name="fixedMarkupChina" />
+            <field column="percent_markup_china" name="percentMarkupChina" />
             <field column="price_with_discount_china" name="priceWithDiscountChina" />
             <field column="prices" name="prices" />
             <field column="properties_hash" name="propertiesHash" />

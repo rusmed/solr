@@ -198,6 +198,13 @@
 	<field name="fixedDiscountChina" type="pfloat" indexed="false" stored="true" docValues="true" />
 	<field name="percentDiscountChina" type="pint" indexed="false" stored="true" />
 	<field name="priceWithDiscountChina" type="pfloat" indexed="true" stored="true" docValues="true" />
+	
+	<field name="fixedMarkupWholesale" type="pfloat" indexed="false" stored="true" />
+	<field name="percentMarkupWholesale" type="pint" indexed="false" stored="true" />
+	<field name="fixedMarkupIndividual" type="pfloat" indexed="false" stored="true" />
+	<field name="percentMarkupIndividual" type="pint" indexed="false" stored="true" />
+	<field name="fixedMarkupChina" type="pfloat" indexed="false" stored="true" />
+	<field name="percentMarkupChina" type="pint" indexed="false" stored="true" />
 
 	<field name="pid" type="pint" indexed="true" stored="true" />
 	
