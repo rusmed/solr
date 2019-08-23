@@ -140,6 +140,7 @@
 						p.fixed_markup_wholesale,p.percent_markup_wholesale,p.price_with_discount_wholesale,
 						p.fixed_markup_individual,p.percent_markup_individual,p.price_with_discount_individual,
 						p.fixed_markup_china,p.percent_markup_china,p.price_with_discount_china,
+						p.price_individual,p.price_wholesale,p.price_china,
 						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
 						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
@@ -182,6 +183,7 @@
 						p.fixed_markup_wholesale,p.percent_markup_wholesale,p.price_with_discount_wholesale,
 						p.fixed_markup_individual,p.percent_markup_individual,p.price_with_discount_individual,
 						p.fixed_markup_china,p.percent_markup_china,p.price_with_discount_china,
+						p.price_individual,p.price_wholesale,p.price_china,
 						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
 						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,cat.path AS c_path,
@@ -276,12 +278,15 @@
             <field column="promo_china_active" name="promoChinaActive" />
             <field column="fixed_markup_wholesale" name="fixedMarkupWholesale" />
             <field column="percent_markup_wholesale" name="percentMarkupWholesale" />
+            <field column="price_wholesale" name="priceWholesale" />
             <field column="price_with_discount_wholesale" name="priceWithDiscountWholesale" />
             <field column="fixed_markup_individual" name="fixedMarkupIndividual" />
             <field column="percent_markup_individual" name="percentMarkupIndividual" />
+            <field column="price_individual" name="priceIndividual" />
             <field column="price_with_discount_individual" name="priceWithDiscountIndividual" />
             <field column="fixed_markup_china" name="fixedMarkupChina" />
             <field column="percent_markup_china" name="percentMarkupChina" />
+            <field column="price_china" name="priceChina" />
             <field column="price_with_discount_china" name="priceWithDiscountChina" />
             <field column="prices" name="prices" />
             <field column="properties_hash" name="propertiesHash" />
