@@ -117,9 +117,9 @@
     <field name="_text_" type="text_general" indexed="true" stored="false" multiValued="true"/>
 
 	<field name="parentId" type="pint" indexed="true" stored="true" />
-	<field name="nameEn" type="string_lower" indexed="true" stored="true" />
-	<field name="nameRu" type="string_lower" indexed="true" stored="true" />
-	<field name="nameCn" type="string_lower" indexed="true" stored="true" />
+	<field name="nameEn" type="text_general" indexed="true" stored="true" />
+	<field name="nameRu" type="text_general" indexed="true" stored="true" />
+	<field name="nameCn" type="text_general" indexed="true" stored="true" />
 	<field name="enabled" type="boolean" indexed="true" stored="true" />
 	<field name="path" type="pint" indexed="true" stored="true" multiValued="true" />
 	<field name="status" type="pint" indexed="true" stored="true" />
