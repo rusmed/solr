@@ -142,7 +142,9 @@
 						p.fixed_markup_china,p.percent_markup_china,p.price_with_discount_china,
 						p.price_individual,p.price_wholesale,p.price_china,
 						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
-						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
+						p.promo_wholesale_id,p.promo_wholesale_active,prw.type AS promo_wholesale_type,prw.percent_discount AS percent_discount_wholesale,
+						p.promo_individual_id,p.promo_individual_active,pri.type AS promo_individual_type,pri.percent_discount AS percent_discount_individual,
+						p.promo_china_id,p.promo_china_active,prc.type AS promo_china_type,prc.percent_discount AS percent_discount_china,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,
 						cat.path AS c_path,cat.name_en AS category_name_en,cat.name_ru AS category_name_ru,cat.name_cn AS category_name_cn,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,pm.logo AS pm_logo,
@@ -159,6 +161,9 @@
 						json_agg(pp.category_property_id) AS category_property_ids,json_agg(pp.value_en) AS property_values_en,
 						json_agg(pp.value_ru) AS property_values_ru,json_agg(pp.value_cn) AS property_values_cn
 					FROM products p  
+					LEFT JOIN promo prw ON prw.id = p.promo_wholesale_id 
+					LEFT JOIN promo pri ON pri.id = p.promo_individual_id
+					LEFT JOIN promo prc ON prc.id = p.promo_china_id
 					LEFT JOIN countries c ON c.id = p.country_id 
 					LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
 					LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
@@ -174,7 +179,7 @@
 					LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
 					LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
 					WHERE p.moderate_status = 4
-					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id"
+					GROUP BY p.id,prw.id,pri.id,prc.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id"
 					
 					deletedPkQuery="SELECT p.id FROM products p WHERE p.moderate_status != 4 AND p.date_updated &gt; '${dih.last_index_time}'"
 					
@@ -186,7 +191,9 @@
 						p.fixed_markup_china,p.percent_markup_china,p.price_with_discount_china,
 						p.price_individual,p.price_wholesale,p.price_china,
 						p.market_type_wholesale,p.market_type_individual,p.market_type_china,p.properties_hash,
-						p.promo_wholesale_id,p.promo_wholesale_active,p.promo_individual_id,p.promo_individual_active,p.promo_china_id,p.promo_china_active,
+						p.promo_wholesale_id,p.promo_wholesale_active,prw.type AS promo_wholesale_type,prw.percent_discount AS percent_discount_wholesale,
+						p.promo_individual_id,p.promo_individual_active,pri.type AS promo_individual_type,pri.percent_discount AS percent_discount_individual,
+						p.promo_china_id,p.promo_china_active,prc.type AS promo_china_type,prc.percent_discount AS percent_discount_china,
 						c.id AS country_id,c.name_en AS c_name_en,c.name_ru AS c_name_ru,c.name_cn AS c_name_cn,
 						cat.path AS c_path,cat.name_en AS category_name_en,cat.name_ru AS category_name_ru,cat.name_cn AS category_name_cn,
 						pm.id AS pm_id,pm.name_en AS pm_name_en,pm.name_ru AS pm_name_ru,pm.name_cn AS pm_name_cn,pm.logo AS pm_logo,
@@ -203,6 +210,9 @@
 						json_agg(pp.category_property_id) AS category_property_ids,json_agg(pp.value_en) AS property_values_en,
 						json_agg(pp.value_ru) AS property_values_ru,json_agg(pp.value_cn) AS property_values_cn
 					FROM products p  
+					LEFT JOIN promo prw ON prw.id = p.promo_wholesale_id 
+					LEFT JOIN promo pri ON pri.id = p.promo_individual_id
+					LEFT JOIN promo prc ON prc.id = p.promo_china_id
 					LEFT JOIN countries c ON c.id = p.country_id 
 					LEFT JOIN product_manufacturers pm ON pm.id = p.product_manufacturer_id 
 					LEFT JOIN product_models pmod ON pmod.id = p.product_model_id 
@@ -218,7 +228,7 @@
 					LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
 					LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
 					WHERE p.id = ${dih.delta.id}
-					GROUP BY p.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id">
+					GROUP BY p.id,prw.id,pri.id,prc.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id">
             <field column="id" name="id" />
             <field column="product_card_id" name="productCardId" />
             <field column="name_en" name="nameEn" />
@@ -276,11 +286,17 @@
             <field column="market_type_china" name="marketTypeChina" />
             <field column="date_updated" name="dateUpdated" />
             <field column="promo_wholesale_id" name="promoWholesaleId" />
+            <field column="promo_wholesale_type" name="promoWholesaleType" />
             <field column="promo_wholesale_active" name="promoWholesaleActive" />
+            <field column="percent_discount_wholesale" name="percentDiscountWholesale" />
             <field column="promo_individual_id" name="promoIndividualId" />
+            <field column="promo_individual_type" name="promoIndividualType" />
             <field column="promo_individual_active" name="promoIndividualActive" />
+            <field column="percent_discount_individual" name="percentDiscountIndividual" />
             <field column="promo_china_id" name="promoChinaId" />
+            <field column="promo_china_type" name="promoChinaType" />
             <field column="promo_china_active" name="promoChinaActive" />
+            <field column="percent_discount_china" name="percentDiscountChina" />
             <field column="fixed_markup_wholesale" name="fixedMarkupWholesale" />
             <field column="percent_markup_wholesale" name="percentMarkupWholesale" />
             <field column="price_wholesale" name="priceWholesale" />

@@ -186,10 +186,13 @@
 	<field name="pricePerUnit" type="pint" indexed="true" stored="true" />
 	
 	<field name="promoWholesaleId" type="pint" indexed="false" stored="true" />
+	<field name="promoWholesaleType" type="pint" indexed="false" stored="true" />
 	<field name="promoWholesaleActive" type="boolean" indexed="false" stored="true" />
 	<field name="promoIndividualId" type="pint" indexed="false" stored="true" />
+	<field name="promoIndividualType" type="pint" indexed="false" stored="true" />
 	<field name="promoIndividualActive" type="boolean" indexed="false" stored="true" />
 	<field name="promoChinaId" type="pint" indexed="false" stored="true" />
+	<field name="promoChinaType" type="pint" indexed="false" stored="true" />
 	<field name="promoChinaActive" type="boolean" indexed="false" stored="true" />
 
 	<field name="fixedDiscountWholesale" type="pfloat" indexed="false" stored="true" docValues="true" />
