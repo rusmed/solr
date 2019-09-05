@@ -178,12 +178,12 @@
 					LEFT JOIN product_properties pp ON p.id = pp.product_id 
 					LEFT JOIN showcase_override_properties sp1 ON s.id = sp1.showcase_id AND sp1.override_property_id = 2 
 					LEFT JOIN showcase_override_properties sp2 ON s.id = sp2.showcase_id AND sp2.override_property_id = 3 
-					WHERE p.moderate_status = 4
+					WHERE p.moderate_status != 5 AND s.deleted = false
 					GROUP BY p.id,prw.id,pri.id,prc.id,c.id,pm.id,pmod.id,s.id,cat.id,sup.id,sl.id,slt.id,man.id,ml.id,mlt.id,sp1.id,sp2.id"
 					
-					deletedPkQuery="SELECT p.id FROM products p WHERE p.moderate_status != 4 AND p.date_updated &gt; '${dih.last_index_time}'"
+					deletedPkQuery="SELECT p.id FROM products p WHERE p.moderate_status = 5 AND p.date_updated &gt; '${dih.last_index_time}'"
 					
-					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status = 4 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
+					deltaQuery="SELECT p.id FROM products p WHERE p.moderate_status != 5 AND p.is_new_product = TRUE AND p.date_updated &gt; '${dih.last_index_time}'"
 					
 					deltaImportQuery="SELECT p.id,p.name_en,p.name_ru,p.name_cn,p.photos,p.available,p.available_in_days,p.gtin,p.mpn,p.delivery,p.warranty,p.pickup,p.feed_id,p.product_card_id,p.date_updated,p.prices,
 						p.fixed_markup_wholesale,p.percent_markup_wholesale,p.price_with_discount_wholesale,
